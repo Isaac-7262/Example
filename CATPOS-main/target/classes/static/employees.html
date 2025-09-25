@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Cat Café POS - จัดการพนักงาน</title>
+<link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/cat-pos-logo.png" alt="Cat Café POS Logo" class="logo-image">
+      <span class="logo-text">Cat Café POS</span>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="index.html" class="nav-link" data-section="pos">
+          <span class="nav-icon">🛒</span> หน้าจอขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="products.html" class="nav-link" data-section="products">
+          <span class="nav-icon">🧋</span> จัดการเมนู
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="customers.html" class="nav-link" data-section="customers">
+          <span class="nav-icon">👥</span> ข้อมูลลูกค้า
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="reports.html" class="nav-link" data-section="reports">
+          <span class="nav-icon">📊</span> รายงานขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="employees.html" class="nav-link active" data-section="employees">
+          <span class="nav-icon">👨‍💼</span> จัดการพนักงาน
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="settings.html" class="nav-link" data-section="settings">
+          <span class="nav-icon">⚙️</span> ตั้งค่า
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="🔍 ค้นหาพนักงาน..." id="searchInput">
+      </div>
+      <div class="user-info">
+        <span id="currentUserDisplay">👤 พนักงาน: กำลังโหลด...</span>
+        <span>📅 <span id="currentDate"></span></span>
+        <button class="btn btn-danger" onclick="logout()" style="margin-left: 15px; padding: 8px 16px;">🚪 ออกจากระบบ</button>
+      </div>
+    </header>
+
+    <section id="employees" class="content-section active">
+        <div class="card">
+            <div class="card-header">
+                <h2>👨‍💼 จัดการพนักงาน</h2>
+                <button class="btn btn-primary" id="btnAddEmployee">➕ เพิ่มพนักงานใหม่</button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ชื่อผู้ใช้</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>ตำแหน่ง</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="employeesTable">
+                    <!-- Employee data will be loaded here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+  </main>
+</div>
+
+<!-- Add/Edit Employee Modal -->
+<div id="employeeModal" class="modal">
+    <div class="modal-content">
+        <h3 id="employeeModalTitle">เพิ่มพนักงานใหม่</h3>
+        <form id="employeeForm">
+            <input type="hidden" id="employeeId">
+            <div class="form-group">
+                <label class="form-label">ชื่อผู้ใช้ (Username)</label>
+                <input type="text" class="form-input" id="employeeUsername" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">ชื่อ-นามสกุล</label>
+                <input type="text" class="form-input" id="employeeFullName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">รหัสผ่าน</label>
+                <input type="password" class="form-input" id="employeePassword">
+                <small class="form-hint">เว้นว่างไว้หากไม่ต้องการเปลี่ยนรหัสผ่าน</small>
+            </div>
+            <div class="form-group">
+                <label class="form-label">ตำแหน่ง</label>
+                <select class="form-select" id="employeeRole" required>
+                    <option value="STAFF">พนักงานขาย</option>
+                    <option value="MANAGER">ผู้จัดการ</option>
+                    <option value="ADMIN">ผู้ดูแลระบบ</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                <button type="submit" class="btn btn-success">💾 บันทึก</button>
+                <button type="button" class="btn btn-danger" onclick="closeModal('employeeModal')">ยกเลิก</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/employees.js"></script>
+</body>
+</html>

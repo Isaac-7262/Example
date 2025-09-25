@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Cat Café POS - ระบบขายหน้าร้าน</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/pos.css">
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/cat-pos-logo.png" alt="Cat Café POS Logo" class="logo-image">
+      <span class="logo-text">Cat Café POS</span>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="index.html" class="nav-link active" data-section="pos">
+          <span class="nav-icon">🛒</span> หน้าจอขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="products.html" class="nav-link" data-section="products">
+          <span class="nav-icon">🧋</span> จัดการเมนู
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="customers.html" class="nav-link" data-section="customers">
+          <span class="nav-icon">👥</span> ข้อมูลลูกค้า
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="reports.html" class="nav-link" data-section="reports">
+          <span class="nav-icon">📊</span> รายงานขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="employees.html" class="nav-link" data-section="employees">
+          <span class="nav-icon">👨‍💼</span> จัดการพนักงาน
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="settings.html" class="nav-link" data-section="settings">
+          <span class="nav-icon">⚙️</span> ตั้งค่า
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="🔍 ค้นหาเมนู..." id="searchInput">
+      </div>
+      <div class="user-info">
+        <span id="currentUserDisplay">👤 พนักงาน: กำลังโหลด...</span>
+        <span>📅 <span id="currentDate"></span></span>
+        <button class="btn btn-danger" onclick="logout()" style="margin-left: 15px; padding: 8px 16px;">🚪 ออกจากระบบ</button>
+      </div>
+    </header>
+
+    <section id="pos" class="content-section active">
+      <div class="pos-grid">
+        <div class="products-section card">
+          <div class="card-header">
+            <h2>🧋 เลือกเมนู</h2>
+          </div>
+          <div class="category-tabs" id="categoryTabs"></div>
+          <div class="products-grid" id="productsGrid"></div>
+        </div>
+
+        <div class="cart-section">
+          <div class="cart-header">
+            <span>🛒 ตะกร้าสินค้า</span>
+          </div>
+          <div class="cart-items" id="cartItems"></div>
+          <div class="cart-total">
+            <div class="cart-total-amount">฿<span id="cartTotal">0.00</span></div>
+            <div>รวมทั้งสิ้น</div>
+          </div>
+          <button class="btn btn-success" style="width:100%;margin-bottom:12px;" id="btnPay">
+            💳 ชำระเงิน
+          </button>
+          <button class="btn btn-danger" style="width:100%;" id="btnClear">
+            🗑️ ล้างตะกร้า
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="paymentMethodModal" class="modal">
+    <div class="modal-content payment-modal-content">
+        <h3 style="margin-bottom: 16px;">🛒 ตรวจสอบรายการและเลือกวิธีชำระเงิน</h3>
+
+        <!-- ส่วนข้อมูลลูกค้า -->
+        <div class="customer-section" style="background: #fff8e1; padding: 14px 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid #ffcc80;">
+            <h4 style="margin-bottom: 10px; color: #ff9800;">👤 ข้อมูลลูกค้า (ไม่จำเป็น)</h4>
+            <div style="display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; align-items: end;">
+                <div class="customer-search-input-wrapper">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">ค้นหาลูกค้า (ชื่อ หรือ เบอร์โทร)</label>
+                    <input type="text" id="customerSearch" class="form-input" placeholder="พิมพ์ชื่อหรือเบอร์โทรเพื่อค้นหา..." style="margin-bottom: 0;">
+                    <div id="customerSearchResults" class="search-results" style="display: none;"></div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="clearSelectedCustomer(); hideCustomerSearchResults();">ยกเลิก</button>
+            </div>
+            <div id="selectedCustomerInfo" style="display: none; margin-top: 12px; padding: 12px; background: white; border-radius: 10px; border: 2px solid #81c784;">
+                <div id="customerDetails"></div>
+                <div id="loyaltyInfo" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <div id="paymentReviewItems" style="margin-bottom: 16px; border: 2px solid #ffe0b2; border-radius: 12px; padding: 10px 12px;">
+        </div>
+        <div class="payment-total-display">
+            <div style="font-size: 2em; font-weight: bold; color: #ff9800;">
+                ฿<span id="paymentModalTotal">0.00</span>
+            </div>
+            <div id="loyaltyDiscount" style="display: none; color: #4caf50; font-size: 1.2em; margin-top: 10px;">
+                🎉 ใช้แต้มสะสม: -฿<span id="discountAmount">60.00</span>
+            </div>
+        </div>
+        <div class="payment-method-grid">
+            <div class="payment-method-card" onclick="selectPaymentMethod('cash')">
+                <div class="payment-icon">💰</div>
+                <div class="payment-title">เงินสด</div>
+                <div class="payment-subtitle">Cash Payment</div>
+            </div>
+            <div class="payment-method-card" onclick="selectPaymentMethod('qr')">
+                <div class="payment-icon">📱</div>
+                <div class="payment-title">สแกนจ่าย</div>
+                <div class="payment-subtitle">QR Code / Mobile Banking</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 25px;">
+            <button class="btn btn-danger" onclick="cancelPaymentFlow('paymentMethodModal')">❌ ยกเลิก</button>
+        </div>
+    </div>
+</div>
+
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <h3 id="paymentTitle"></h3>
+        <div id="cashPayment" style="display:none;">
+            <div class="form-group"><label class="form-label">ยอดรวม</label><input type="text" class="form-input" id="totalAmount" readonly></div>
+            <div class="form-group"><label class="form-label">รับเงินสด</label><input type="number" class="form-input" id="cashReceived"></div>
+            <div class="form-group"><label class="form-label">เงินทอน</label><input type="text" class="form-input" id="changeAmount" readonly></div>
+        </div>
+        <div id="qrPayment" style="display:none; text-align:center;">
+            <h4>📱 สแกน QR Code เพื่อชำระเงิน</h4>
+            <div class="qr-code" style="margin:15px auto;">📱</div>
+            <p>ยอดที่ต้องชำระ: <b>฿<span id="qrAmount">0.00</span></b></p>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+            <button class="btn btn-success" id="confirmPayment">✅ ยืนยันชำระเงิน</button>
+            <button class="btn btn-danger" onclick="cancelPaymentFlow('paymentModal')">ยกเลิก</button>
+        </div>
+    </div>
+</div>
+
+<div id="receiptModal" class="modal">
+    <div class="modal-content">
+        <div class="receipt" id="receiptContent"></div>
+        <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center;">
+            <button class="btn btn-secondary" onclick="printReceipt()">🖨️ พิมพ์</button>
+            <button class="btn btn-primary" onclick="emailReceipt()">📧 ส่งอีเมล</button>
+            <button class="btn btn-danger" onclick="closeModal('receiptModal')">ปิด</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/pos.js"></script>
+</body>
+</html>

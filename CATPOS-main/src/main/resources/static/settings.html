@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Cat Café POS - ตั้งค่า</title>
+<link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/cat-pos-logo.png" alt="Cat Café POS Logo" class="logo-image">
+      <span class="logo-text">Cat Café POS</span>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="index.html" class="nav-link" data-section="pos">
+          <span class="nav-icon">🛒</span> หน้าจอขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="products.html" class="nav-link" data-section="products">
+          <span class="nav-icon">🧋</span> จัดการเมนู
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="customers.html" class="nav-link" data-section="customers">
+          <span class="nav-icon">👥</span> ข้อมูลลูกค้า
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="reports.html" class="nav-link" data-section="reports">
+          <span class="nav-icon">📊</span> รายงานขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="employees.html" class="nav-link" data-section="employees">
+          <span class="nav-icon">👨‍💼</span> จัดการพนักงาน
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="settings.html" class="nav-link active" data-section="settings">
+          <span class="nav-icon">⚙️</span> ตั้งค่า
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header hidden">
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="🔍 ค้นหา..." id="searchInput">
+      </div>
+      <div class="user-info">
+        <span id="currentUserDisplay">👤 พนักงาน: กำลังโหลด...</span>
+        <span>📅 <span id="currentDate"></span></span>
+        <button class="btn btn-danger" onclick="logout()" style="margin-left: 15px; padding: 8px 16px;">🚪 ออกจากระบบ</button>
+      </div>
+    </header>
+
+    <section id="settings" class="content-section active">
+        <div class="card">
+            <div class="card-header"><h2>⚙️ ตั้งค่าระบบ</h2></div>
+            <div class="form-group"><label class="form-label">ชื่อร้าน</label><input type="text" class="form-input" id="shopName"></div>
+            <div class="form-group"><label class="form-label">ที่อยู่ร้าน</label><textarea class="form-input" id="shopAddress" rows="3"></textarea></div>
+            <div class="form-group"><label class="form-label">เบอร์โทร</label><input type="text" class="form-input" id="shopPhone"></div>
+            <div class="form-group"><label class="form-label">เลขประจำตัวผู้เสียภาษี</label><input type="text" class="form-input" id="taxId"></div>
+            <div class="form-group"><label class="form-label">PromptPay ID</label><input type="text" class="form-input" id="promptpayId"></div>
+            <button class="btn btn-success" id="btnSaveSettings">💾 บันทึกการตั้งค่า</button>
+        </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

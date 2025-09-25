@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Cat Café POS - จัดการเมนู</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/cat-pos-logo.png" alt="Cat Café POS Logo" class="logo-image">
+      <span class="logo-text">Cat Café POS</span>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="index.html" class="nav-link" data-section="pos">
+          <span class="nav-icon">🛒</span> หน้าจอขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="products.html" class="nav-link active" data-section="products">
+          <span class="nav-icon">🧋</span> จัดการเมนู
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="customers.html" class="nav-link" data-section="customers">
+          <span class="nav-icon">👥</span> ข้อมูลลูกค้า
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="reports.html" class="nav-link" data-section="reports">
+          <span class="nav-icon">📊</span> รายงานขาย
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="employees.html" class="nav-link" data-section="employees">
+          <span class="nav-icon">👨‍💼</span> จัดการพนักงาน
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="settings.html" class="nav-link" data-section="settings">
+          <span class="nav-icon">⚙️</span> ตั้งค่า
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="🔍 ค้นหาเมนู..." id="searchInput">
+      </div>
+      <div class="user-info">
+        <span id="currentUserDisplay">👤 พนักงาน: กำลังโหลด...</span>
+        <span>📅 <span id="currentDate"></span></span>
+        <button class="btn btn-danger" onclick="logout()" style="margin-left: 15px; padding: 8px 16px;">🚪 ออกจากระบบ</button>
+      </div>
+    </header>
+
+    <section id="products" class="content-section active">
+        <div class="card">
+            <div class="card-header">
+                <h2>🧋 จัดการเมนู</h2>
+                <button class="btn btn-primary" id="btnAddProduct">➕ เพิ่มเมนูใหม่</button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                        <th>ราคา</th>
+                        <th>คงเหลือ</th>
+                        <th>หมวด</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTable"></tbody>
+            </table>
+        </div>
+    </section>
+  </main>
+</div>
+
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <h3 id="productModalTitle"></h3>
+        <form id="productForm">
+            <div class="form-group"><label class="form-label">รหัส</label><input type="text" class="form-input" id="productCode"></div>
+            <div class="form-group"><label class="form-label">ชื่อเมนู</label><input type="text" class="form-input" id="productName" required></div>
+            <div class="form-group"><label class="form-label">ราคา</label><input type="number" class="form-input" id="productPrice" required></div>
+            <div class="form-group"><label class="form-label">คงเหลือ</label><input type="number" class="form-input" id="productStock" required></div>
+            <div class="form-group"><label class="form-label">หมวดหมู่</label><select class="form-select" id="productCategory" required><option value="drinks">🥤 เครื่องดื่ม</option><option value="desserts">🍰 เบเกอรี่ &amp; ขนมหวาน</option><option value="snacks">🍲 อาหารทานเล่น</option></select></div>
+            <div class="form-group">
+                <label class="form-label">รูปภาพสินค้า</label>
+                <div class="product-image-uploader">
+                    <img id="productImagePreview" src="https://via.placeholder.com/160x120?text=No+Image" alt="ตัวอย่างรูปสินค้า" class="product-image-preview">
+                    <div class="product-image-actions">
+                        <input type="file" id="productImageFile" accept="image/*">
+                        <small class="form-hint">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน 5 MB)</small>
+                        <button type="button" class="btn btn-danger" id="btnClearProductImage" style="margin-top:8px;">ลบรูปภาพ</button>
+                    </div>
+                </div>
+                <input type="hidden" id="productImageUrl">
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                <button type="submit" class="btn btn-success">💾 บันทึก</button>
+                <button type="button" class="btn btn-danger" onclick="closeModal('productModal')">ยกเลิก</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/products.js"></script>
+</body>
+</html>

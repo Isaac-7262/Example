@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Cat Café POS - เข้าสู่ระบบ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #ffffff, #bbdefb, #e0f7fa);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3e2723;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 204, 128, 0.5);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 204, 128, 0.1), transparent);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-logo {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+
+        .login-logo img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 204, 128, 0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            background: white;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .login-title {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #ff6f00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #795548;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .login-form {
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #5d4037;
+            font-size: 1.1em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid #ffcc80;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fff8e1;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #ff9800;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: #a1887f;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #ff9a56, #ffad56);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 154, 86, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #e57373, #ef5350);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(229, 115, 115, 0.2);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #ffcc80;
+            border-top: 3px solid #ff9800;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #8d6e63;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        .demo-accounts {
+            background: linear-gradient(135deg, #fff8e1, #ffe0b2);
+            border: 2px solid #ffcc80;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .demo-accounts h4 {
+            color: #ff6f00;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .demo-account {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ffe0b2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-account:hover {
+            background: #fff8e1;
+            transform: translateX(5px);
+        }
+
+        .demo-account:last-child {
+            margin-bottom: 0;
+        }
+
+        .demo-account strong {
+            color: #5d4037;
+        }
+
+        .demo-account span {
+            color: #8d6e63;
+            font-size: 0.9em;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 25px;
+                margin: 20px;
+            }
+
+            .login-title {
+                font-size: 1.8em;
+            }
+
+            .login-logo {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+        <div class="login-logo">
+            <img src="images/cat-pos-logo.png" alt="Cat Café POS Logo">
+        </div>
+            <h1 class="login-title">Cat Café POS</h1>
+            <p class="login-subtitle">ระบบขายหน้าร้าน</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">
+                    👤 ชื่อผู้ใช้
+                </label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-input"
+                    placeholder="กรุณากรอกชื่อผู้ใช้"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">
+                    🔒 รหัสผ่าน
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input"
+                    placeholder="กรุณากรอกรหัสผ่าน"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="login-button" id="loginButton">
+                🚀 เข้าสู่ระบบ
+            </button>
+        </form>
+
+        <div class="loading" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #8d6e63;">กำลังตรวจสอบข้อมูล...</p>
+        </div>
+
+        <div class="demo-accounts">
+            <h4>📋 บัญชีทดสอบ</h4>
+            <div class="demo-account" onclick="fillLogin('admin', 'admin123')">
+                <strong>ผู้ดูแลระบบ:</strong> <span>admin / admin123</span>
+            </div>
+            <div class="demo-account" onclick="fillLogin('manager', 'manager123')">
+                <strong>ผู้จัดการ:</strong> <span>manager / manager123</span>
+            </div>
+            <div class="demo-account" onclick="fillLogin('cashier', 'cashier123')">
+                <strong>พนักงานขาย:</strong> <span>cashier / cashier123</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💛 Made with love for Cat Café</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/auth';
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        // Check if user is already logged in
+        window.addEventListener('load', () => {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (sessionToken) {
+                validateSession(sessionToken);
+            }
+        });
+
+        // Form submission
+        loginForm.addEventListener('submit', handleLogin);
+
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) {
+                showError('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
+                return;
+            }
+
+            setLoading(true);
+            hideError();
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Store session info
+                    localStorage.setItem('sessionToken', result.sessionToken);
+                    localStorage.setItem('currentUser', JSON.stringify(result.user));
+
+                    // Show success and redirect
+                    showSuccess('เข้าสู่ระบบสำเร็จ! กำลังเปลี่ยนหน้า...');
+
+                    setTimeout(() => {
+                        window.location.href = '/index.html';
+                    }, 1500);
+                } else {
+                    showError(result.message || 'เข้าสู่ระบบไม่สำเร็จ');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองอีกครั้ง');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function validateSession(sessionToken) {
+            try {
+                const response = await fetch(`${API_BASE}/validate`, {
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.valid) {
+                    // User already logged in, redirect to main page
+                    window.location.href = '/index.html';
+                } else {
+                    // Invalid session, clear storage
+                    localStorage.removeItem('sessionToken');
+                    localStorage.removeItem('currentUser');
+                }
+            } catch (error) {
+                console.error('Session validation error:', error);
+                localStorage.removeItem('sessionToken');
+                localStorage.removeItem('currentUser');
+            }
+        }
+
+        function fillLogin(username, password) {
+            usernameInput.value = username;
+            passwordInput.value = password;
+            usernameInput.focus();
+        }
+
+        function setLoading(loading) {
+            if (loading) {
+                loginButton.disabled = true;
+                loginButton.style.display = 'none';
+                loadingSpinner.style.display = 'block';
+            } else {
+                loginButton.disabled = false;
+                loginButton.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            errorMessage.style.background = 'linear-gradient(135deg, #e57373, #ef5350)';
+        }
+
+        function showSuccess(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            errorMessage.style.background = 'linear-gradient(135deg, #81c784, #66bb6a)';
+        }
+
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        // Handle Enter key on inputs
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                passwordInput.focus();
+            }
+        });
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Add some interactive animations
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

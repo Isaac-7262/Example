@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <style>
+    .box { fill:#ffffff; stroke:#333; stroke-width:2; rx:10; ry:10; }
+    .title { font-family: Arial, Helvetica, sans-serif; font-size:18px; font-weight:bold; fill:#1f2937; }
+    .attr { font-family: Arial, Helvetica, sans-serif; font-size:14px; fill:#374151; }
+    .note { font-family: Arial, Helvetica, sans-serif; font-size:12px; fill:#6b7280; }
+    .link { stroke:#222; stroke-width:2; marker-end:url(#arrow); }
+    .card { font-family: Arial, Helvetica, sans-serif; font-size:12px; fill:#111827; font-weight:bold; }
+    .bg { fill:#f9fafb; }
+  </style>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,3 L0,6 z" fill="#222" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" x="0" y="0" width="1200" height="760" />
+
+  <!-- CUSTOMER -->
+  <rect class="box" x="60" y="60" width="280" height="180" />
+  <text class="title" x="80" y="90">CUSTOMER</text>
+  <text class="attr" x="80" y="120">id (PK)</text>
+  <text class="attr" x="80" y="140">name, phone, email</text>
+  <text class="attr" x="80" y="160">address</text>
+  <text class="attr" x="80" y="180">loyaltyPoints</text>
+
+  <!-- ORDERS -->
+  <rect class="box" x="460" y="60" width="300" height="220" />
+  <text class="title" x="480" y="90">ORDERS</text>
+  <text class="attr" x="480" y="120">id (PK)</text>
+  <text class="attr" x="480" y="140">customer_id (FK → CUSTOMER.id)</text>
+  <text class="attr" x="480" y="160">customerName</text>
+  <text class="attr" x="480" y="180">orderDate, paymentMethod</text>
+  <text class="attr" x="480" y="200">discountAmount, totalAmount</text>
+  <text class="attr" x="480" y="220">receiptNo (UNIQUE)</text>
+
+  <!-- ORDER_ITEM -->
+  <rect class="box" x="860" y="60" width="300" height="220" />
+  <text class="title" x="880" y="90">ORDER_ITEM</text>
+  <text class="attr" x="880" y="120">id (PK)</text>
+  <text class="attr" x="880" y="140">order_id (FK → ORDERS.id)</text>
+  <text class="attr" x="880" y="160">product_id (FK → PRODUCT.id)</text>
+  <text class="attr" x="880" y="180">productName</text>
+  <text class="attr" x="880" y="200">quantity, price, subtotal</text>
+
+  <!-- PRODUCT -->
+  <rect class="box" x="860" y="340" width="300" height="200" />
+  <text class="title" x="880" y="370">PRODUCT</text>
+  <text class="attr" x="880" y="400">id (PK)</text>
+  <text class="attr" x="880" y="420">code (UNIQUE)</text>
+  <text class="attr" x="880" y="440">name, price, stock</text>
+  <text class="attr" x="880" y="460">category, imageUrl</text>
+
+  <!-- USER -->
+  <rect class="box" x="60" y="340" width="300" height="220" />
+  <text class="title" x="80" y="370">USERS</text>
+  <text class="attr" x="80" y="400">id (PK)</text>
+  <text class="attr" x="80" y="420">username (UNIQUE), password</text>
+  <text class="attr" x="80" y="440">fullName, role</text>
+  <text class="attr" x="80" y="460">email, phone</text>
+  <text class="attr" x="80" y="480">address, department</text>
+  <text class="attr" x="80" y="500">employeeId, salary, active</text>
+
+  <!-- STORE_SETTING -->
+  <rect class="box" x="460" y="360" width="300" height="180" />
+  <text class="title" x="480" y="390">STORE_SETTING</text>
+  <text class="attr" x="480" y="420">id (PK, fixed = 1)</text>
+  <text class="attr" x="480" y="440">shopName, address, phone</text>
+  <text class="attr" x="480" y="460">taxId, promptpayId</text>
+
+  <!-- Relationships -->
+  <!-- CUSTOMER -> ORDERS -->
+  <line class="link" x1="340" y1="150" x2="460" y2="150" />
+  <text class="card" x="350" y="140">1</text>
+  <text class="card" x="430" y="140">N</text>
+
+  <!-- ORDERS -> ORDER_ITEM -->
+  <line class="link" x1="760" y1="170" x2="860" y2="170" />
+  <text class="card" x="770" y="160">1</text>
+  <text class="card" x="835" y="160">N</text>
+
+  <!-- PRODUCT -> ORDER_ITEM -->
+  <line class="link" x1="1010" y1="340" x2="1010" y2="280" />
+  <text class="card" x="990" y="330">1</text>
+  <text class="card" x="990" y="290">N</text>
+
+  <!-- Notes -->
+  <text class="note" x="60" y="610">หมายเหตุ: ORDERS.customerName และ ORDER_ITEM.productName เก็บชื่อซ้ำเพื่อออกใบเสร็จ (denormalized).</text>
+  <text class="note" x="60" y="630">ข้อเสนอแนะ FK: ORDERS.customer_id → ON DELETE SET NULL, ORDER_ITEM.order_id → ON DELETE CASCADE, ORDER_ITEM.product_id → ON DELETE RESTRICT.</text>
+</svg>
+

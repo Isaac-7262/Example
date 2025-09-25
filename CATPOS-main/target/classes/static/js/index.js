@@ -1,0 +1,1 @@
+// This file is intentionally left blank as its contents have been moved to common.js and other specific js files.
